@@ -1,95 +1,89 @@
 using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Windows.Forms;
 
-public partial class MainForm : Form
+namespace TaxiDispatchApp
 {
-    private TextBox txtCustomerName, txtAddress, txtPhone;
-    private ComboBox cmbTaxiType, cmbCapacity, cmbServiceClass;
-    private Button btnRegisterOrder;
-    private DataGridView dgvOrders;
-
-    public MainForm()
+    public partial class MainForm : Form
     {
-        InitializeComponent();
-        InitializeUI();
-    }
+        private ComboBox taxiTypeComboBox;
+        private ComboBox carClassComboBox;
+        private Label taxiTypeLabel;
+        private Label carClassLabel;
+        private Button dispatchButton;
 
-    private void InitializeUI()
-    {
-        // Инициализация элементов управления и их размещение
-        txtCustomerName = new TextBox();
-        txtAddress = new TextBox();
-        txtPhone = new TextBox();
-        cmbTaxiType = new ComboBox();
-        cmbCapacity = new ComboBox();
-        cmbServiceClass = new ComboBox();
-        btnRegisterOrder = new Button();
-        dgvOrders = new DataGridView();
+        public MainForm()
+        {
+            InitializeComponent();
+            InitializeUI();
+        }
 
-        // Настройка свойств элементов
-        // ...
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            
+            // ComboBox для выбора типа такси (грузовое/легковое)
+            this.taxiTypeComboBox = new ComboBox
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Items = { "Грузовое", "Легковое" },
+                Location = new System.Drawing.Point(120, 30),
+                Size = new System.Drawing.Size(150, 21)
+            };
 
-        // Добавление элементов на форму
-        Controls.Add(txtCustomerName);
-        Controls.Add(txtAddress);
-        Controls.Add(txtPhone);
-        Controls.Add(cmbTaxiType);
-        Controls.Add(cmbCapacity);
-        Controls.Add(cmbServiceClass);
-        Controls.Add(btnRegisterOrder);
-        Controls.Add(dgvOrders);
+            // ComboBox для выбора класса обслуживания (эконом/VIP)
+            this.carClassComboBox = new ComboBox
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Items = { "Эконом", "VIP" },
+                Location = new System.Drawing.Point(120, 70),
+                Size = new System.Drawing.Size(150, 21)
+            };
 
-        // Размещение элементов на форме
-        // ...
+            // Label для отображения информации о выборе типа такси
+            this.taxiTypeLabel = new Label
+            {
+                AutoSize = true,
+                Location = new System.Drawing.Point(30, 30),
+                Text = "Выберите тип такси:"
+            };
 
-        // Добавление обработчика события для кнопки регистрации заказа
-        btnRegisterOrder.Click += btnRegisterOrder_Click;
+            // Label для отображения информации о выборе класса обслуживания
+            this.carClassLabel = new Label
+            {
+                AutoSize = true,
+                Location = new System.Drawing.Point(30, 70),
+                Text = "Выберите класс обслуживания:"
+            };
 
-        // Загрузка данных в ComboBox'ы
-        LoadTaxiTypes();
-        LoadCapacities();
-        LoadServiceClasses();
-    }
+            // Button для запуска процесса диспетчеризации
+            this.dispatchButton = new Button
+            {
+                Location = new System.Drawing.Point(120, 120),
+                Size = new System.Drawing.Size(150, 30),
+                Text = "Вызвать такси"
+            };
+            this.dispatchButton.Click += new EventHandler(DispatchButton_Click);
 
-    private void btnRegisterOrder_Click(object sender, EventArgs e)
-    {
-        // Получение данных из элементов управления
-        string customerName = txtCustomerName.Text;
-        string address = txtAddress.Text;
-        string phone = txtPhone.Text;
-        string taxiType = cmbTaxiType.Text;
-        string capacity = cmbCapacity.Text;
-        string serviceClass = cmbServiceClass.Text;
+            // Добавление элементов управления на форму
+            this.Controls.Add(taxiTypeComboBox);
+            this.Controls.Add(carClassComboBox);
+            this.Controls.Add(taxiTypeLabel);
+            this.Controls.Add(carClassLabel);
+            this.Controls.Add(dispatchButton);
 
-        // Вставка данных в базу данных
-        DatabaseManager.InsertOrder(customerName, address, phone, taxiType, capacity, serviceClass);
+            this.ResumeLayout(false);
+        }
 
-        // Обновление DataGridView
-        RefreshOrdersDataGridView();
-    }
+        private void InitializeUI()
+        {
+            // Настройка параметров элементов управления и их размещение на форме
+            // Можешь добавить дополнительные настройки, стили и размещения по своему усмотрению
+        }
 
-    private void RefreshOrdersDataGridView()
-    {
-        dgvOrders.DataSource = DatabaseManager.GetOrders();
-    }
-
-    private void LoadTaxiTypes()
-    {
-        // Загрузка видов такси в ComboBox
-        // ...
-    }
-
-    private void LoadCapacities()
-    {
-        // Загрузка грузоподъемностей в ComboBox
-        // ...
-    }
-
-    private void LoadServiceClasses()
-    {
-        // Загрузка классов обслуживания в ComboBox
-        // ...
+        private void DispatchButton_Click(object sender, EventArgs e)
+        {
+            // Логика диспетчеризации
+            // Тут ты можешь добавить код для обработки выбора типа и класса такси
+        }
     }
 }
